@@ -4,7 +4,7 @@ import { SiTicktick } from "react-icons/si";
 const PriceCard = (props) => {
   return (
     <center>
-      <div data-aos="fade-up" className="bg-primary w-[80%] h-auto md:h-auto lg:h-[85%] flex flex-col justify-between bg-white text-primary-foreground p-4 m-2 border-gray-200 rounded-lg shadow-md">
+      <div data-aos="fade-up" className="bg-primary w-[80%] h-auto md:h-auto lg:h-[85%] flex flex-col justify-between bg-white text-primary-foreground p-4 m-2 border-2 rounded-lg shadow-md">
         <h2 className="w-full text-center text-xl md:text-xl lg:text-4xl font-semibold text-[#00e0bf]">
           {props.name}
         </h2>
