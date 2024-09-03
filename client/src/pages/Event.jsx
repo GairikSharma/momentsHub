@@ -5,7 +5,8 @@ import axios from "axios";
 import { SlCalender } from "react-icons/sl";
 import { GoArrowRight } from "react-icons/go";
 import { AiOutlineDelete } from "react-icons/ai";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+import { useParams } from "next/navigation";
 
 function Event() {
   const [events, setEvents] = useState([]);
@@ -50,7 +51,23 @@ function Event() {
     }
   };
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  
+
+  const deleteEvent = async (id) => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/events/${id}`);
+      console.log(response.data);
+      alert("Event deleted successfully");
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        alert("Event not found");
+      } else {
+        alert("An error occurred: " + error.message);
+      }
+    }
+  };
 
   return (
     <div className="flex flex-col w-full">
@@ -58,7 +75,6 @@ function Event() {
         {events && events.length !== 0 ? (
           <div className="w-full grid gap-0 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center min-h-[280px] max-h-fit">
             {events.map((event, index) => (
-              
               <div
                 // data-aos="fade-down"
                 key={index}
@@ -81,13 +97,19 @@ function Event() {
                 </div>
                 <div className="flex justify-start items-center">
                   <button
-                  onClick={() => {
-                    navigate(`/upload-image/${event._id}`)
-                  }}
-                  className="underline flex justify-start items-center px-3 bg-[#00e0bf] w-12 h-10 mx-3 rounded-lg text-white">
+                    onClick={() => {
+                      navigate(`/upload-image/${event._id}`);
+                    }}
+                    className="underline flex justify-start items-center px-3 bg-[#00e0bf] w-12 h-10 mx-3 rounded-lg text-white"
+                  >
                     <GoArrowRight size={24} />{" "}
                   </button>
-                  <button className="underline flex justify-start items-center px-3 bg-[#00e0bf] w-12 h-10 mx-3 rounded-lg text-white">
+                  <button
+                    className="underline flex justify-start items-center px-3 bg-[#00e0bf] w-12 h-10 mx-3 rounded-lg text-white"
+                    onClick={() => {
+                      deleteEvent(event._id)
+                    }}
+                  >
                     <AiOutlineDelete size={24} />
                   </button>
                 </div>
