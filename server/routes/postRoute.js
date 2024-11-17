@@ -11,6 +11,7 @@ import {
 } from "../controllers/postController.js";
 import { createUser, loginUser } from "../controllers/userController.js";
 
+
 const router = express.Router();
 
 // Configure multer storage
@@ -37,5 +38,6 @@ router.post("/", upload.single("image"), createPost);
 router.get("/:id", getOnePost);
 router.put("/:id", updateOnePOst);
 router.delete("/:id", deleteOnePost);
+
 
 export default router;

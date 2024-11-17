@@ -50,6 +50,7 @@ function UploadImageModal() {
       }
       console.log("Uploaded Image URLs:", imageUrls);
       setLoader(false)
+      
     } catch (error) {
       console.log(error);
     }
