@@ -101,7 +101,9 @@ export const uploadImage = async (req, res) => {
 //Get Image
 export const getImageByEventId = async (req, res) => {
   try {
-    const eventImages = await Images.findById(req.params.id);
+    console.log(req.params.id);
+    
+    const eventImages = await Images.find({eventId: req.params.id});
     if (!eventImages)
       return res.status(404).json({ message: "Images not found" });
     res.status(200).json(eventImages);
