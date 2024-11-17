@@ -6,7 +6,7 @@ import { SlCalender } from "react-icons/sl";
 import { GoArrowRight } from "react-icons/go";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import { useParams } from "next/navigation";
+// import { useParams } from "next/navigation";
 
 function Event() {
   const [events, setEvents] = useState([]);

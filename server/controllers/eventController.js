@@ -1,4 +1,5 @@
 import Event from '../models/eventModel.js';
+import Images from '../models/uploadImage.js';
 
 // Create an event
 export const createEvent = async (req, res) => {
@@ -76,3 +77,20 @@ export const deleteEvent = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+// Upload Image
+export const uploadImage = async (req, res) => {
+    try {
+        const {eventId, images}= req.body;
+        const image= new Images({
+            eventId,
+            images
+        })
+        await image.save()
+        res.status(200).json({ message: 'Image uploaded successfully' });
+
+    } catch (error) {
+        console.log(error);
+        
+    }
+}

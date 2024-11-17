@@ -6,6 +6,9 @@ const router = express.Router();
 // Create a new event
 router.post('/', createEvent);
 
+//Upload Image
+router.post('/upload', )
+
 // Get all events
 router.post('/get', getAllEvents);
 
