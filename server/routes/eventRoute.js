@@ -1,5 +1,5 @@
 import express from 'express';
-import { createEvent, getAllEvents, getOneEvent, updateEvent, deleteEvent } from '../controllers/eventController.js';
+import { createEvent, getAllEvents, getOneEvent, updateEvent, deleteEvent, uploadImage, getImageByEventId } from '../controllers/eventController.js';
 
 const router = express.Router();
 
@@ -7,7 +7,10 @@ const router = express.Router();
 router.post('/', createEvent);
 
 //Upload Image
-router.post('/upload', )
+router.post('/upload', uploadImage)
+
+//Get Image
+router.get('/get-images/:id', getImageByEventId);
 
 // Get all events
 router.post('/get', getAllEvents);

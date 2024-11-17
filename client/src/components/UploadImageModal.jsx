@@ -12,9 +12,9 @@ function UploadImageModal() {
   };
 
   const [files, setFiles] = useState(null);
-  const [fileNames,  setFileNames] = useState([]);
-  const [loader, setLoader] = useState(false)
-  const [filename, setFileName] = useState("")
+  const [fileNames, setFileNames] = useState([]);
+  const [loader, setLoader] = useState(false);
+  const [filename, setFileName] = useState("");
 
   const handleImagesUpload = (e) => {
     if (e.target.files.length <= 5) {
@@ -30,29 +30,66 @@ function UploadImageModal() {
   console.log(id);
 
   const uploadImages = async () => {
-    setLoader(true)
+    setLoader(true);
     if (!files || files.length === 0) {
       alert("Please select some images");
-      setLoader(false)
+      setLoader(false);
       return;
     }
     const imageUrls = [];
-  
+
     try {
-      
       for (let i = 0; i < files.length; i++) {
         const currentFile = files[i];
         const imageRef = ref(storage, `images/${currentFile.name}`);
         const uploadCurrentImage = await uploadBytes(imageRef, currentFile);
         const downloadUrl = await getDownloadURL(uploadCurrentImage.ref);
         imageUrls.push(downloadUrl);
-        setFileName(currentFile.name)
+        setFileName(currentFile.name);
       }
       console.log("Uploaded Image URLs:", imageUrls);
-      setLoader(false)
-      
+      setLoader(false);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const uploadImageByEventId = async (req, res) => {
+    try {
+      const { id, files } = req.body; // Assuming images are sent as a field in the request body
+      if (!id || !files) {
+        return res
+          .status(400)
+          .json({ message: "Missing event ID or image files" });
+      }
+
+      const response = await fetch("http://localhost:5000/events/upload", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ eventId: id, images: files }),
+      });
+
+      if (response.ok) {
+        return res
+          .status(200)
+          .json({ message: "Images uploaded successfully" });
+          
+      } else {
+        const errorDetails = await response.text(); // Read response body for more error details
+        return res
+          .status(500)
+          .json({
+            message: "Error while uploading images",
+            details: errorDetails,
+          });
+      }
+    } catch (error) {
+      console.error("Error occurred:", error);
+      res
+        .status(500)
+        .json({ message: "Internal server error", error: error.message });
     }
   };
 
@@ -90,7 +127,10 @@ function UploadImageModal() {
               </button>
               <button
                 type="button"
-                onClick={uploadImages}
+                onClick={() => {
+                  uploadImages()
+                  uploadImageByEventId()
+                }}
                 className="px-4 py-2 bg-[#00e0bf] text-white rounded-md flex gap-2 justify-center items-center"
               >
                 {loader && <Loader />}
